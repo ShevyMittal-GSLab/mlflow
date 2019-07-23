@@ -1,3 +1,2 @@
-import sys
-print(sys.modules)
-print(sys.executable)
+df = spark.sql("select * from wine")
+df.show()
