@@ -25,11 +25,10 @@ if __name__ == "__main__":
     np.random.seed(40)
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
-    wine_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "wine-quality.csv")
-    data = pd.read_csv(wine_path)
+    df = spark.sql('select * from wine').toPandas() 
 
     # Split the data into training and test sets. (0.75, 0.25) split.
-    train, test = train_test_split(data)
+    train, test = train_test_split(df)
 
     # The predicted column is "quality" which is a scalar from [3, 9]
     train_x = train.drop(["quality"], axis=1)
@@ -39,7 +38,9 @@ if __name__ == "__main__":
 
     alpha = 0.5
     l1_ratio = 0.5
-
+	mlflow.set_tracking_uri("http://10.43.13.1:5000")
+	experiment_name = "Spark320"
+	mlflow.set_experiment(experiment_name)
     with mlflow.start_run():
         lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
         lr.fit(train_x, train_y)
