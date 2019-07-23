@@ -38,9 +38,9 @@ if __name__ == "__main__":
 
     alpha = 0.5
     l1_ratio = 0.5
-	mlflow.set_tracking_uri("http://10.43.13.1:5000")
-	experiment_name = "Spark320"
-	mlflow.set_experiment(experiment_name)
+    mlflow.set_tracking_uri("http://10.43.13.1:5000")
+    experiment_name = "Spark320"
+    mlflow.set_experiment(experiment_name)
     with mlflow.start_run():
         lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
         lr.fit(train_x, train_y)
