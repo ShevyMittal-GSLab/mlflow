@@ -2,7 +2,4 @@ name: tutorial
 
 entry_points:
   main:
-    parameters:
-      alpha: float
-      l1_ratio: {type: float, default: 0.1}
     command: "python train.py"
