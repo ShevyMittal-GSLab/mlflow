@@ -2,4 +2,4 @@ name: tutorial
 
 entry_points:
   main:
-    command: "/usr/bin/spark-submit newFile.py"
+    command: "/usr/bin/pyspark newFile.py"

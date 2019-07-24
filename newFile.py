@@ -10,7 +10,7 @@ from sklearn.linear_model import ElasticNet
 
 import mlflow
 import mlflow.sklearn
-from pyspark.sql import SparkSession
+#from pyspark.sql import SparkSession
 
 def eval_metrics(actual, pred):
     rmse = np.sqrt(mean_squared_error(actual, pred))
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 	
-    spark = SparkSession.builder.master("yarn").getOrCreate()
+    #spark = SparkSession.builder.master("yarn").getOrCreate()
     df = spark.sql('select * from wine').toPandas() 
 
     # Split the data into training and test sets. (0.75, 0.25) split.
