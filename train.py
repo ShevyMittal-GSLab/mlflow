@@ -43,7 +43,9 @@ if __name__ == "__main__":
 
     alpha = 0.5
     l1_ratio = 0.5
-
+    mlflow.set_tracking_uri("http://10.43.13.1:5000")
+    experiment_name = "Spark320"
+    mlflow.set_experiment(experiment_name)
     with mlflow.start_run():
         lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
         lr.fit(train_x, train_y)
@@ -62,5 +64,6 @@ if __name__ == "__main__":
         mlflow.log_metric("rmse", rmse)
         mlflow.log_metric("r2", r2)
         mlflow.log_metric("mae", mae)
-
+	mlflow.set_tag("mlflow.source.type", "PROJECT")
+	mlflow.set_tag("mlflow.source.name", "https://github.com/ShevyMittal-GSLab/mlflow/train.py")
         mlflow.sklearn.log_model(lr, "model")
