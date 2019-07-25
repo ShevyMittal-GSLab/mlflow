@@ -2,4 +2,4 @@ name: tutorial
 
 entry_points:
   main:
-    command: "/usr/bin/pyspark train.py"
+    command: "/usr/bin/spark-submit train.py"
