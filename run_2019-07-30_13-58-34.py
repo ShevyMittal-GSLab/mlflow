@@ -19,6 +19,8 @@ def eval_metrics(actual, pred):
 	mae = mean_absolute_error(actual, pred)
 	r2 = r2_score(actual, pred)
 	return rmse, mae, r2 
+spark = SparkSession.builder.master("local").getOrCreate()
+print(spark)
 df = spark.sql('select * from wine').toPandas() 
 target = "quality"
 train, test = train_test_split(df)
@@ -40,7 +42,6 @@ l1_ratio = 1.0
 random_state = 42
 max_iter = None
 mlflow_run_name = 'ElasticNet' + '_0'
-spark = SparkSession.builder.getOrCreate()
 mlflow.set_tracking_uri("http://10.43.13.1:5000")
 experiment_name = "Spark320"
 mlflow.set_experiment(experiment_name)
