@@ -35,8 +35,8 @@ plt.ylabel("count")
 plt.xlabel(target)
 plt.show()
 plt.savefig("plot.png")
-alpha = 0.8
-l1_ratio = 0.8
+alpha = 0.6
+l1_ratio = 0.6
 random_state = 42
 max_iter = None
 mlflow_run_name = 'ElasticNet' + '_0'
@@ -64,8 +64,8 @@ with mlflow.start_run():
 	mlflow.log_artifact("plot.png")
 	
 
-	mlflow.set_tag("mlflow.source.type", "PROJECT")
-	mlflow.set_tag("mlflow.source.name", "https://github.com/ShevyMittal-GSLab/mlflow/file2407.py")
+	mlflow.set_tag("mlflow.source.type", "NOTEBOOK	")
+	mlflow.set_tag("mlflow.source.name", "run_2019-07-30_13-15-45.py")
 	mlflow.set_tag("mlflow.user", "GS-2024")
 	mlflow.sklearn.log_model(lr,".")
 
