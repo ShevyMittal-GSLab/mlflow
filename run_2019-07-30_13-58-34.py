@@ -9,7 +9,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
-
+from pyspark.sql import SparkSession
 import mlflow
 import mlflow.sklearn
 import mlflow.models
@@ -40,7 +40,7 @@ l1_ratio = 1.0
 random_state = 42
 max_iter = None
 mlflow_run_name = 'ElasticNet' + '_0'
-
+spark = SparkSession.builder.getOrCreate()
 mlflow.set_tracking_uri("http://10.43.13.1:5000")
 experiment_name = "Spark320"
 mlflow.set_experiment(experiment_name)
