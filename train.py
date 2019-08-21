@@ -48,7 +48,7 @@ if __name__ == "__main__":
     mlflow.set_experiment(experiment_name)
     print("1" +str(mlflow))
     with mlflow.start_run():
-        print("2" +mlflow)
+        print("2" +str(mlflow))
         lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
         lr.fit(train_x, train_y)
 
