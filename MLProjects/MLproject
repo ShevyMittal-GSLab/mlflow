@@ -1,0 +1,5 @@
+name: tutorial
+
+entry_points:
+  main:
+    command: "/usr/bin/spark-submit run_2019-08-02_15-32-32.py"
