@@ -52,7 +52,7 @@ colsample_bytree = 0.3
 max_depth = 3
 objective = 'reg:linear'
 n_estimators = 5
-subsample = 10
+subsample = 0.1
 gamma = 5
 reg_lambda = 5
 
