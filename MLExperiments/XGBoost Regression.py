@@ -50,9 +50,9 @@ colsample_bytree = 0.3
 max_depth = 3
 objective = 'reg:linear'
 n_estimators = 5
-subsample = None
-gamma = None
-reg_lambda = None
+subsample = 0.2
+gamma = 10
+reg_lambda = 10
 
 mlflow.set_tracking_uri("http://10.43.13.1:5000")
 experiment_name = "XGBoost Regression"
