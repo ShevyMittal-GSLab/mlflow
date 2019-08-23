@@ -52,13 +52,13 @@ objective = 'reg:linear'
 n_estimators = 10
 subsample = None
 gamma = None
-lambda1 = None
+reg_lambda = None
 
 mlflow.set_tracking_uri("http://10.43.13.1:5000")
 experiment_name = "XGBoost Regression"
 mlflow.set_experiment(experiment_name)
 with mlflow.start_run():
-	xg_reg = xgb.XGBRegressor(objective =objective, colsample_bytree = colsample_bytree, learning_rate = learning_rate,max_depth = max_depth, alpha = alpha, n_estimators = n_estimators,gamma = gamma, lambda=lambda1,subsample=subsample)
+	xg_reg = xgb.XGBRegressor(objective =objective, colsample_bytree = colsample_bytree, learning_rate = learning_rate,max_depth = max_depth, alpha = alpha, n_estimators = n_estimators,gamma = gamma, reg_lambda=reg_lambda,subsample=subsample)
 	xg_reg.fit(train_x, train_y)
 	predicted_qualities = xg_reg.predict(test_x)
 	(rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
