@@ -72,7 +72,7 @@ with mlflow.start_run():
 	mlflow.log_param("alpha", alpha)
 	mlflow.log_param("n_estimators", n_estimators)
 	mlflow.log_param("gamma", gamma)
-	mlflow.log_param("lambda", lambda1)
+	mlflow.log_param("lambda", reg_lambda)
 	mlflow.log_param("subsample", subsample)
 	mlflow.log_param("Model","XGBoost")
 	
