@@ -44,12 +44,12 @@ plt.xlabel(target)
 plt.show()
 plt.savefig("plot.png")
 
-alpha = None
+alpha = 10
 learning_rate = 0.1
-colsample_bytree = None
-max_depth = None
+colsample_bytree = 0.3
+max_depth = 5
 objective = reg:linear
-n_estimators = None
+n_estimators = 10
 subsample = None
 gamma = None
 lambda1 = None
@@ -58,15 +58,12 @@ mlflow.set_tracking_uri("http://10.43.13.1:5000")
 experiment_name = "AIRBNB_1"
 mlflow.set_experiment(experiment_name)
 with mlflow.start_run():
-	xg_reg = xgb.XGBRegressor(objective =objective, colsample_bytree = colsample_bytree, learning_rate = learning_rate,max_depth = max_depth, alpha = alpha, n_estimators = n_estimators)
+	xg_reg = xgb.XGBRegressor(objective =objective, colsample_bytree = colsample_bytree, learning_rate = learning_rate,max_depth = max_depth, alpha = alpha, n_estimators = n_estimators,gamma = gamma, lambda=lambda1,subsample=subsample)
 	xg_reg.fit(train_x, train_y)
 	predicted_qualities = xg_reg.predict(test_x)
 	(rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
 	
 	print("XGBoost model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
-	print("  RMSE: %s" % rmse)
-	print("  MAE: %s" % mae)
-	print("  R2: %s" % r2)
 	
 	mlflow.log_param("objective", objective)
 	mlflow.log_param("colsample_bytree", colsample_bytree)
@@ -74,11 +71,17 @@ with mlflow.start_run():
 	mlflow.log_param("max_depth", max_depth)
 	mlflow.log_param("alpha", alpha)
 	mlflow.log_param("n_estimators", n_estimators)
+	mlflow.log_param("gamma", gamma)
+	mlflow.log_param("lambda", lambda1)
+	mlflow.log_param("subsample", subsample)
 	mlflow.log_param("Model","XGBoost")
+	
 	mlflow.log_metric("rmse", rmse)
 	mlflow.log_metric("r2", r2)
 	mlflow.log_metric("mae", mae)
+	
 	mlflow.log_artifact("plot.png")
+	
 	mlflow.sklearn.log_model(xg_reg,".")
 
 	runId = mlflow.active_run().info.run_id
