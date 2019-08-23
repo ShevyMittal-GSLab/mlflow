@@ -1,0 +1,5 @@
+name: tutorial
+
+entry_points:
+  main:
+    command: "/usr/bin/pyspark run_2019-08-02_15-32-32.py"
