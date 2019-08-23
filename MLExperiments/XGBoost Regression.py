@@ -47,9 +47,9 @@ plt.savefig("plot.png")
 alpha = 10
 learning_rate = 0.1
 colsample_bytree = 0.3
-max_depth = 5
+max_depth = 3
 objective = 'reg:linear'
-n_estimators = 10
+n_estimators = 5
 subsample = None
 gamma = None
 reg_lambda = None
