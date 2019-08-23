@@ -63,7 +63,7 @@ with mlflow.start_run():
 	predicted_qualities = xg_reg.predict(test_x)
 	(rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
 	
-	print("XGBoost model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
+	print("XGBoost model")
 	
 	mlflow.log_param("objective", objective)
 	mlflow.log_param("colsample_bytree", colsample_bytree)
