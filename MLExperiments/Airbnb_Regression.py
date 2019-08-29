@@ -22,13 +22,18 @@ def eval_metrics(actual, pred):
 df = spark.sql('select * from knime_datasets.queens').toPandas() 
 target = "Price"
 df = df[df.Price.notnull()]
+df = df[df.Price.notnull()]
 df['Price'] = pd.to_numeric(df['Price'],errors='coerce')
+print(df['Price'])
 df = df[df.Review_Scores_Rating5.notnull()]
 df['Review_Scores_Rating5'] = pd.to_numeric(df['Review_Scores_Rating5'],errors='coerce')
+print(df['Review_Scores_Rating5'])
 df = df[df.Number_Of_Reviews.notnull()]
 df['Number_Of_Reviews'] = pd.to_numeric(df['Number_Of_Reviews'],errors='coerce')
+print(df['Number_Of_Reviews'])
 df = df[df.Review_Scores_Rating12.notnull()]
 df['Review_Scores_Rating12'] = pd.to_numeric(df['Review_Scores_Rating12'],errors='coerce')
+print(df['Review_Scores_Rating12'])
 train, test = train_test_split(df)
 train_x = train[['Review_Scores_Rating5', 'Number_Of_Reviews', 'Review_Scores_Rating12']]
 test_x = test[['Review_Scores_Rating5', 'Number_Of_Reviews', 'Review_Scores_Rating12']]
@@ -44,12 +49,12 @@ plt.xlabel(target)
 plt.show()
 plt.savefig("target_count_plot.png")
 
-alpha = 0
+alpha = 10
 learning_rate = 0.3
 colsample_bytree = 1
 max_depth = 6
 objective = 'reg:linear'
-n_estimators = 1
+n_estimators = 10000
 subsample = 1
 gamma = 0
 reg_lambda = 1
