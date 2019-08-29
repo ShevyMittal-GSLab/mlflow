@@ -9,7 +9,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
-
+import xgboost as xgb 
 import mlflow
 import mlflow.sklearn
 import mlflow.models
@@ -22,6 +22,7 @@ def eval_metrics(actual, pred):
 df = spark.sql('select * from knime_datasets.queens').toPandas() 
 target = "Price"
 df = df[df.Price.notnull()]
+df = df[df.Price.notnull()]
 df['Price'] = pd.to_numeric(df['Price'],errors='coerce')
 df = df[df.Review_Scores_Rating5.notnull()]
 df['Review_Scores_Rating5'] = pd.to_numeric(df['Review_Scores_Rating5'],errors='coerce')
@@ -29,6 +30,9 @@ df = df[df.Number_Of_Reviews.notnull()]
 df['Number_Of_Reviews'] = pd.to_numeric(df['Number_Of_Reviews'],errors='coerce')
 df = df[df.Review_Scores_Rating12.notnull()]
 df['Review_Scores_Rating12'] = pd.to_numeric(df['Review_Scores_Rating12'],errors='coerce')
+df = df.dropna(how='any',axis=0)
+col_mask=df.isnull().any(axis=0)
+print(col_mask)
 train, test = train_test_split(df)
 train_x = train[['Review_Scores_Rating5', 'Number_Of_Reviews', 'Review_Scores_Rating12']]
 test_x = test[['Review_Scores_Rating5', 'Number_Of_Reviews', 'Review_Scores_Rating12']]
@@ -44,35 +48,44 @@ plt.xlabel(target)
 plt.show()
 plt.savefig("target_count_plot.png")
 
-alpha = 0.5
-l1_ratio = 0.5
-random_state = 42
-max_iter = None
-mlflow_run_name = 'ElasticNet' + '_0'
+alpha = 0
+learning_rate = 0.3
+colsample_bytree = 1
+max_depth = 6
+objective = 'reg:linear'
+n_estimators = 1
+subsample = 1
+gamma = 0
+reg_lambda = 1
 
 mlflow.set_tracking_uri("http://10.43.13.1:5000")
 experiment_name = "AirBnb_ElasticNet"
 mlflow.set_experiment(experiment_name)
 with mlflow.start_run():
-	lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=random_state)
-	lr.fit(train_x, train_y)
-	
-	predicted_qualities = lr.predict(test_x)
-	
+	xg_reg = xgb.XGBRegressor(objective =objective, colsample_bytree = colsample_bytree, learning_rate = learning_rate,max_depth = max_depth, alpha = alpha, n_estimators = n_estimators,gamma = gamma, reg_lambda=reg_lambda,subsample=subsample)
+	xg_reg.fit(train_x, train_y)
+	predicted_qualities = xg_reg.predict(test_x)
 	(rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
-	print("Elasticnet model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
-	print("  RMSE: %s" % rmse)
-	print("  MAE: %s" % mae)
-	print("  R2: %s" % r2)
 	
+	print("XGBoost model")
+	
+	mlflow.log_param("objective", objective)
+	mlflow.log_param("colsample_bytree", colsample_bytree)
+	mlflow.log_param("learning_rate", learning_rate)
+	mlflow.log_param("max_depth", max_depth)
 	mlflow.log_param("alpha", alpha)
-	mlflow.log_param("l1_ratio", l1_ratio)
-	mlflow.log_param("Model","ElasticNet")
+	mlflow.log_param("n_estimators", n_estimators)
+	mlflow.log_param("gamma", gamma)
+	mlflow.log_param("lambda", reg_lambda)
+	mlflow.log_param("subsample", subsample)
+	mlflow.log_param("Model","XGBoost")
+	
 	mlflow.log_metric("rmse", rmse)
 	mlflow.log_metric("r2", r2)
 	mlflow.log_metric("mae", mae)
-	mlflow.log_artifact("plot.png")
-	mlflow.sklearn.log_model(lr,".")
+	
+	mlflow.log_artifact("target_count_plot.png")
+	mlflow.sklearn.log_model(xg_reg,".")
 
 	runId = mlflow.active_run().info.run_id
 	expId = mlflow.active_run().info.experiment_id
