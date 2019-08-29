@@ -30,7 +30,7 @@ df = df[df.Number_Of_Reviews.notnull()]
 df['Number_Of_Reviews'] = pd.to_numeric(df['Number_Of_Reviews'],errors='coerce')
 df = df[df.Review_Scores_Rating12.notnull()]
 df['Review_Scores_Rating12'] = pd.to_numeric(df['Review_Scores_Rating12'],errors='coerce')
- col_mask=df.isnull().any(axis=0)
+col_mask=df.isnull().any(axis=0)
 print(col_mask)
 train, test = train_test_split(df)
 train_x = train[['Review_Scores_Rating5', 'Number_Of_Reviews', 'Review_Scores_Rating12']]
@@ -47,12 +47,12 @@ plt.xlabel(target)
 plt.show()
 plt.savefig("target_count_plot.png")
 
-alpha = 10
+alpha = 0
 learning_rate = 0.3
 colsample_bytree = 1
 max_depth = 6
 objective = 'reg:linear'
-n_estimators = 1000
+n_estimators = 1
 subsample = 1
 gamma = 0
 reg_lambda = 1
