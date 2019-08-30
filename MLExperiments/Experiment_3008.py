@@ -42,7 +42,7 @@ groups = ("coffee", "tea", "water")
 
 # Create plot
 fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1, axisbg="1.0")
+ax = fig.add_subplot(1, 1, 1)
 
 for data, color, group in zip(data, colors, groups):
 	x,y = data
