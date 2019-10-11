@@ -1,0 +1,5 @@
+name: tutorial
+
+entry_points:
+  Airbnb_Regression:
+    command: "/usr/bin/spark-submit Airbnb_Regression.py"
